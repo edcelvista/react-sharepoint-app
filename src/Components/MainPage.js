@@ -37,7 +37,7 @@ const MainPage = (props) => {
     setInprogress(true);
     let data = JSON.stringify({
       "request": {
-        "Querytext": "(RelatedHubSites:3ec33b7e-ee1e-40b3-b0d2-16ced59d91a5) (-SiteId:33ec33b7e-ee1e-40b3-b0d2-16ced59d91a5)",
+        "Querytext": "FileType:(docx OR xlsx OR pptm OR pptx OR csv) contentclass:STS_ListItem_DocumentLibrary (RelatedHubSites:3ec33b7e-ee1e-40b3-b0d2-16ced59d91a5) (-SiteId:33ec33b7e-ee1e-40b3-b0d2-16ced59d91a5)",
         "SelectProperties": {
           "results": [
             "Title",
@@ -101,7 +101,11 @@ const MainPage = (props) => {
       setInprogress(false);
       console.log(e);
     });
-  }
+  };
+
+  const handleResetClick = () => {
+    setResponse(null);
+  };
 
   return (
     <div>
@@ -110,34 +114,41 @@ const MainPage = (props) => {
       {isError !== "" ? <Alert severity="error">{isError} <a href="/">go back</a></Alert> : <></>}
       {isInprogress ? <LinearProgress/> :
         response !== null ?
-          <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 840 }}>
-              <Table sx={{ minWidth: 650 }} size="small" stickyHeader aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>Title</TableCell>
-                    <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>Path</TableCell>
-                    <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>FileType</TableCell>
-                    <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>SiteName</TableCell>
-                    <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>Building</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {response.map((row, index) => (
-                    <TableRow
-                      key={index}
-                    >
-                      <TableCell sx={{border: '0.8px solid black'}} component="th" scope="row">{row.Cells[0].Value} </TableCell>
-                      <TableCell sx={{border: '0.8px solid black'}}>{row.Cells[1].Value}</TableCell>
-                      <TableCell sx={{border: '0.8px solid black'}}>{row.Cells[2].Value}</TableCell>
-                      <TableCell sx={{border: '0.8px solid black'}}>{row.Cells[3].Value}</TableCell>
-                      <TableCell sx={{border: '0.8px solid black'}}>{row.Cells[4].Value}</TableCell>
+          <>
+            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+              <TableContainer sx={{ maxHeight: 840 }}>
+                <Table sx={{ minWidth: 650 }} size="small" stickyHeader aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>Title</TableCell>
+                      <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>Path</TableCell>
+                      <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>FileType</TableCell>
+                      <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>SiteName</TableCell>
+                      <TableCell sx={{ backgroundColor: '#009688', color: 'white', textTransform: "uppercase", fontWeight: "800", border: '1px solid white'}}>Building</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
+                  </TableHead>
+                  <TableBody>
+                    {response.map((row, index) => (
+                      <TableRow
+                        key={index}
+                      >
+                        <TableCell sx={{border: '0.8px solid black'}} component="th" scope="row">{row.Cells[0].Value} </TableCell>
+                        <TableCell sx={{border: '0.8px solid black'}}><a href={row.Cells[1].Value} target="_blank">{row.Cells[1].Value}</a></TableCell>
+                        <TableCell sx={{border: '0.8px solid black'}}>{row.Cells[2].Value}</TableCell>
+                        <TableCell sx={{border: '0.8px solid black'}}>{row.Cells[3].Value}</TableCell>
+                        <TableCell sx={{border: '0.8px solid black'}}>{row.Cells[4].Value}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+            <Box sx={{float: "right", margin: "10px 10px 0px 0px"}}>
+              <Button onClick={() => handleResetClick()} variant="outlined" color="primary">
+                Reset
+              </Button>
+            </Box>
+          </>
         :
           <Box display="flex" justifyContent="center" alignItems="center" sx={{ height: '70vh' }}>
             <Button onClick={() => handleSearchFiles()} variant="contained" color="primary">
