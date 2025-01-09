@@ -12,6 +12,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from "axios";
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const MainPage = (props) => {
   const [isAuth, setIsAuth]           = useState(false);
@@ -146,6 +148,7 @@ const MainPage = (props) => {
             <Box sx={{float: "right", margin: "10px 10px 0px 0px"}}>
               <Button onClick={() => handleResetClick()} variant="outlined" color="primary">
                 Reset
+                <ClearIcon/>
               </Button>
             </Box>
           </>
@@ -153,6 +156,7 @@ const MainPage = (props) => {
           <Box display="flex" justifyContent="center" alignItems="center" sx={{ height: '70vh' }}>
             <Button onClick={() => handleSearchFiles()} variant="contained" color="primary">
               Search Files
+              <SearchIcon sx={{ margin: "0px 0px 0px 5px", fontSize: "16px" }}/>
             </Button>
           </Box>
       }
